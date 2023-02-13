@@ -2,12 +2,16 @@
 	import CustomAvatar from '../components/CustomAvatar.svelte';
 	import ResultAndDecision from '../components/ResultAndDecision.svelte';
 	import ComponentEvent from '../components/ComponentEvent.svelte';
+	import { InputChip } from '@skeletonlabs/skeleton';
 
-	function getRandomIntBetweenZeroAndOneHundred() {
-		return Math.floor(Math.random() * 101);
+	let skills = [];
+	function getAndPushRandomIntBetweenZeroAndOneHundred() {
+		skills.push(Math.floor(Math.random() * 101));
+		return skills[skills.length - 1];
 	}
 	let currentView = [0];
 	let decision = "";
+	let n_samples = 4;
 	let components = [{ listeners: { decision: handleMessage }, component: ResultAndDecision }];
 	function changeCurrentViewToOne(pos) {
 		currentView[pos] = 1 
@@ -16,6 +20,9 @@
 		decision = event.detail;
 		currentView.push(0);
 		console.log(decision);
+	}
+	function isGreaterThanOne(value) {
+		return value > 1;
 	}
 </script>
 <div class="container mx-auto p-8 space-y-8">
@@ -32,7 +39,7 @@
 		<a class="btn variant-filled-tertiary" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
 	</section>
 
-	
+	<input class="chip variant-ringed-secondary" id="n_samples" type="number" name="n_samples" bind:value={n_samples} />
 	<div class="grid grid-cols-4"> 
 		{#each currentView as cv, i}
 			<div class="justify-center items-center card card-hover p-0 h-72 w-72 mr-6 mb-6" on:click={() => changeCurrentViewToOne(i)} on:keypress={() => changeCurrentViewToOne(i)}>
@@ -43,7 +50,7 @@
 					<CustomAvatar id={i} />
 				{:else}
 					{#each components as component}
-						<ComponentEvent {component} skill={getRandomIntBetweenZeroAndOneHundred()}/>
+						<ComponentEvent {component} skill={getAndPushRandomIntBetweenZeroAndOneHundred()}/>
 					{/each}
 				{/if}
 			</div>
