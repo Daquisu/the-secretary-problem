@@ -9,7 +9,6 @@
 	let currentView = [0];
 	let decision = "";
 	let components = [{ listeners: { decision: handleMessage }, props: {skill: getRandomIntBetweenZeroAndOneHundred()}, component: ResultAndDecision }];
-	// let rad = { listeners: { decision: handleMessage }, props: {}, component: ResultAndDecision };
 	function changeCurrentViewToOne(pos) {
 		currentView[pos] = 1 
 	}
@@ -34,9 +33,9 @@
 	</section>
 
 	
-	<div class="flex"> 
+	<div class="grid grid-cols-4"> 
 		{#each currentView as cv, i}
-			<div class="flex-col justify-center items-center card card-hover p-0 h-72 w-72 mr-6" on:click={() => changeCurrentViewToOne(i)} on:keypress={() => changeCurrentViewToOne(i)}>
+			<div class="justify-center items-center card card-hover p-0 h-72 w-72 mr-6 mb-6" on:click={() => changeCurrentViewToOne(i)} on:keypress={() => changeCurrentViewToOne(i)}>
 				<!-- Got it from:
 					https://svelte.dev/repl/5b495a6d61e64d0cabdb3657f100837c?version=3.18.2  
 				No idea why it doesn't work using component[0], though.-->
