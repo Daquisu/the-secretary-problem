@@ -3,9 +3,12 @@
 	import ResultAndDecision from '../components/ResultAndDecision.svelte';
 	import ComponentEvent from '../components/ComponentEvent.svelte';
 
+	function getRandomIntBetweenZeroAndOneHundred() {
+		return Math.floor(Math.random() * 101);
+	}
 	let currentView = [0];
 	let decision = "";
-	let components = [{ listeners: { decision: handleMessage }, props: {}, component: ResultAndDecision }];
+	let components = [{ listeners: { decision: handleMessage }, props: {skill: getRandomIntBetweenZeroAndOneHundred()}, component: ResultAndDecision }];
 	// let rad = { listeners: { decision: handleMessage }, props: {}, component: ResultAndDecision };
 	function changeCurrentViewToOne(pos) {
 		currentView[pos] = 1 
