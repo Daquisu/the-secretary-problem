@@ -1,14 +1,10 @@
 <script>
-	import CustomAvatar from '../components/CustomAvatar.svelte';	
+	import CustomAvatar from '../components/CustomAvatar.svelte';
+	import ResultAndDecision from '../components/ResultAndDecision.svelte';
 
-	function getRandomIntBetweenZeroAndOneHundred() {
-		return Math.floor(Math.random() * 101);
-	}
-	// const views = [new CustomAvatar({id: 0}),
-	// 				new CustomAvatar({id: 1})]
 	let currentView = 0;
-	function toggleView() {
-		currentView = currentView == 0 ? 1 : 0
+	function changeCurrentViewToOne() {
+		currentView = 1
 	}
 </script>
 <div class="container mx-auto p-8 space-y-8">
@@ -27,8 +23,8 @@
 
 	
 	<div class="flex"> 
-		<div class="flex justify-center items-center card card-hover p-0 h-48 w-48 mr-6" on:click={toggleView} on:keypress={toggleView}>
-			<svelte:component this={CustomAvatar} id={currentView == 0? 0 : 1}></svelte:component>
+		<div class="flex justify-center items-center card card-hover p-0 h-72 w-72 mr-6" on:click={changeCurrentViewToOne} on:keypress={changeCurrentViewToOne}>
+			<svelte:component this={currentView == 0? CustomAvatar : ResultAndDecision}></svelte:component>
 		</div>
 	</div>
 </div>

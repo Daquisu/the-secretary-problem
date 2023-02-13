@@ -3,5 +3,5 @@
     export let id;
 </script>
 
-<Avatar src="https://i.pravatar.cc/500?img={id}" class="w-48 rounded-3xl" />
+<Avatar src="https://i.pravatar.cc/500?img={id}" class="w-72 rounded-2xl" />
   
