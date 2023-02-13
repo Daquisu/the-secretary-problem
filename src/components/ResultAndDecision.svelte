@@ -12,11 +12,10 @@
 	}
 </script>
 
-<div class="">
-    <div class="title"> Interview Result: {getRandomIntBetweenZeroAndOneHundred()}% </div>
-    <div class="flex ">
-        <button class="btn bg-tertiary-500" on:click={dispatchAccept}>Accept</button>
-        <button class="btn bg-primary-500" on:click={dispatchReject}>Reject</button>
+    <div class="w-72 h-72 justify-center items-center flex flex-col"> 
+        <div> Interview Result: {getRandomIntBetweenZeroAndOneHundred()}% </div>
+        <div>
+            <button class="btn bg-tertiary-500" on:click={dispatchAccept}>Accept</button>
+            <button class="btn bg-primary-500" on:click={dispatchReject}>Reject</button>
+        </div>
     </div>
-    
-</div>
