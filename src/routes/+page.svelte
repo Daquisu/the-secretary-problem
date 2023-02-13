@@ -8,7 +8,7 @@
 	}
 	let currentView = [0];
 	let decision = "";
-	let components = [{ listeners: { decision: handleMessage }, props: {skill: getRandomIntBetweenZeroAndOneHundred()}, component: ResultAndDecision }];
+	let components = [{ listeners: { decision: handleMessage }, component: ResultAndDecision }];
 	function changeCurrentViewToOne(pos) {
 		currentView[pos] = 1 
 	}
@@ -43,7 +43,7 @@
 					<CustomAvatar id={i} />
 				{:else}
 					{#each components as component}
-						<ComponentEvent {component}/>
+						<ComponentEvent {component} skill={getRandomIntBetweenZeroAndOneHundred()}/>
 					{/each}
 				{/if}
 			</div>

@@ -1,7 +1,8 @@
-<svelte:component this={component.component} { ...component.props } bind:this={instance}/>
+<svelte:component this={component.component} { skill } bind:this={instance}/>
 
 <script>
   export let component;
+  export let skill;
 
 	let instance;
 	
