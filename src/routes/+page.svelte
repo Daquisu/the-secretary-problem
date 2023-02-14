@@ -87,7 +87,7 @@
 				<!-- Message -->
 				<div class="alert-message">
 					<h3>End of game!</h3>
-					<p>{"The best guess is " + (indexOfMax(skills) + 1) + " with a score of " + skills[indexOfMax(skills)-1] + "."}</p>
+					<p>{"The best guess is " + (indexOfMax(skills) + 1) + " with a score of " + skills[indexOfMax(skills)] + "."}</p>
 					<p>{"Your guess was " + (currentView.length) + " with a score of " + skills[currentView.length-1] + "."}</p>
 				</div>
 				<!-- Actions -->
