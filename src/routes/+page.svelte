@@ -8,7 +8,7 @@
 	let decision = "";
 	let n_samples = 4;
 	let skills = [];
-	let i;
+	let visible;
 	for (let i = 0; i < n_samples; i++) {
 		skills.push(Math.floor(Math.random() * 100));
 	}
@@ -17,11 +17,13 @@
 		currentView[pos] = 1 
 	}
 	function handleMessage(event) {
-		decision = event.detail;
-		if (decision == "Rejected") {
-			currentView.push(0);
-		} else {
-			finishGame();
+		if (!visible) {
+			decision = event.detail;
+			if (decision == "Rejected") {
+				currentView.push(0);
+			} else {
+				finishGame();
+			}
 		}
 	}
 	function indexOfMax(arr) {
@@ -42,8 +44,11 @@
 		return maxIndex;
 	}
 	function finishGame() {
-		let bestGuess = indexOfMax(skills) + 1;
-		alert("The best guess is " + bestGuess + " with a score of " + skills[bestGuess-1] + ".\nYour quess was " + (currentView.length) + " with a score of " + skills[currentView.length-1] + ".");
+		visible = true;
+		// TODO(Daquisu): Show other candidates after finishing the game?
+		// for (let i = currentView.length; i < n_samples; i++) {
+		// 	currentView.push(0);
+		// } 
 		// TODO(Daquisu): Add a button to reset the game.
 		// TODO(Daquisu): Customize the alert.
 	}
@@ -53,10 +58,11 @@
 		for (let i = 0; i < n_samples; i++) {
 			skills.push(Math.floor(Math.random() * 100));
 		}
+		visible = false;
 	}
 </script>
 <div class="container mx-auto p-8 space-y-8">
-	<h1>Hello Skeleton</h1>
+	<!-- <h1>Hello Skeleton</h1>
 	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
 	<hr />
 	<section class="card p-4">
@@ -69,10 +75,28 @@
 		<a class="btn variant-filled-tertiary" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
 	</section>
 
-	<hr />
+	<hr /> -->
 	<input class="chip variant-ringed-secondary" id="n_samples" type="number" name="n_samples" bind:value={n_samples} />
 	<button class="btn variant-filled-primary" on:click={resetGame}>Reset</button>
 	<div> Click on the image to see the performance. </div>
+	<div class="grid justify-center">
+		{#if visible}
+			<aside class="alert z-50 opacity-100 variant-filled-warning absolute  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+				<!-- Icon -->
+				<!-- <div>(icon)</div> -->
+				<!-- Message -->
+				<div class="alert-message">
+					<h3>End of game!</h3>
+					<p>{"The best guess is " + (indexOfMax(skills) + 1) + " with a score of " + skills[indexOfMax(skills)-1] + "."}</p>
+					<p>{"Your guess was " + (currentView.length) + " with a score of " + skills[currentView.length-1] + "."}</p>
+				</div>
+				<!-- Actions -->
+				<div class="alert-actions">
+					<button class="btn variant-filled-primary" on:click={resetGame}>Reset</button>
+				</div>
+			</aside>
+		{/if}
+	</div>
 	<div class="grid grid-cols-4"> 
 		{#each currentView as cv, i}
 			{#if i < n_samples}
