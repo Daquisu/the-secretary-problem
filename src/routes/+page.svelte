@@ -5,7 +5,7 @@
 	import { InputChip } from '@skeletonlabs/skeleton';
 
 	let currentView = [0];
-	let decision = "";
+	let decision = '';
 	let n_samples = 4;
 	let skills = [];
 	let visible;
@@ -14,12 +14,12 @@
 	}
 	let components = [{ listeners: { decision: handleMessage }, component: ResultAndDecision }];
 	function changeCurrentViewToOne(pos) {
-		currentView[pos] = 1 
+		currentView[pos] = 1;
 	}
 	function handleMessage(event) {
 		if (!visible) {
 			decision = event.detail;
-			if (decision == "Rejected") {
+			if (decision == 'Rejected') {
 				currentView.push(0);
 			} else {
 				finishGame();
@@ -48,7 +48,7 @@
 		// TODO(Daquisu): Show other candidates after finishing the game?
 		// for (let i = currentView.length; i < n_samples; i++) {
 		// 	currentView.push(0);
-		// } 
+		// }
 		// TODO(Daquisu): Add a button to reset the game.
 		// TODO(Daquisu): Customize the alert.
 	}
@@ -61,6 +61,7 @@
 		visible = false;
 	}
 </script>
+
 <div class="container mx-auto p-8 space-y-8">
 	<!-- <h1>Hello Skeleton</h1>
 	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
@@ -76,19 +77,39 @@
 	</section>
 
 	<hr /> -->
-	<input class="chip variant-ringed-secondary" id="n_samples" type="number" name="n_samples" bind:value={n_samples} />
+	<input
+		class="chip variant-ringed-secondary"
+		id="n_samples"
+		type="number"
+		name="n_samples"
+		bind:value={n_samples}
+	/>
 	<button class="btn variant-filled-primary" on:click={resetGame}>Reset</button>
-	<div> Click on the image to see the performance. </div>
+	<div>Click on the image to see the performance.</div>
 	<div class="grid justify-center">
 		{#if visible}
-			<aside class="alert z-50 opacity-100 variant-filled-warning absolute  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+			<aside
+				class="alert z-50 opacity-100 variant-filled-warning absolute  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+			>
 				<!-- Icon -->
 				<!-- <div>(icon)</div> -->
 				<!-- Message -->
 				<div class="alert-message">
 					<h3>End of game!</h3>
-					<p>{"The best guess is " + (indexOfMax(skills) + 1) + " with a score of " + skills[indexOfMax(skills)] + "."}</p>
-					<p>{"Your guess was " + (currentView.length) + " with a score of " + skills[currentView.length-1] + "."}</p>
+					<p>
+						{'The best guess is ' +
+							(indexOfMax(skills) + 1) +
+							' with a score of ' +
+							skills[indexOfMax(skills)] +
+							'.'}
+					</p>
+					<p>
+						{'Your guess was ' +
+							currentView.length +
+							' with a score of ' +
+							skills[currentView.length - 1] +
+							'.'}
+					</p>
 				</div>
 				<!-- Actions -->
 				<div class="alert-actions">
@@ -97,18 +118,22 @@
 			</aside>
 		{/if}
 	</div>
-	<div class="grid grid-cols-4"> 
+	<div class="grid grid-cols-4">
 		{#each currentView as cv, i}
 			{#if i < n_samples}
-				<div class="justify-center items-center card card-hover p-0 h-72 w-72 mr-6 mb-6" on:click={() => changeCurrentViewToOne(i)} on:keypress={() => changeCurrentViewToOne(i)}>
+				<div
+					class="justify-center items-center card card-hover p-0 h-72 w-72 mr-6 mb-6"
+					on:click={() => changeCurrentViewToOne(i)}
+					on:keypress={() => changeCurrentViewToOne(i)}
+				>
 					<!-- Got it from:
 						https://svelte.dev/repl/5b495a6d61e64d0cabdb3657f100837c?version=3.18.2  
 					No idea why it doesn't work using component[0], though.-->
 					{#if cv == 0}
-						<CustomAvatar />
+						<CustomAvatar id={Math.ceil(Math.random() * 70) + 1} />
 					{:else}
 						{#each components as component}
-							<ComponentEvent {component} skill={skills[i]}/>
+							<ComponentEvent {component} skill={skills[i]} is_last={i == (n_samples - 1)} />
 						{/each}
 					{/if}
 				</div>
