@@ -11,10 +11,10 @@
 		<!-- App Bar -->
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">Skeleton</strong>
+				<strong class="text-xl uppercase">The Secretary Problem</strong>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
-				<a
+				<!-- <a
 					class="btn btn-sm variant-ghost-surface"
 					href="https://discord.gg/EXqV7W8MtY"
 					target="_blank"
@@ -29,7 +29,7 @@
 					rel="noreferrer"
 				>
 					Twitter
-				</a>
+				</a> -->
 				<a
 					class="btn btn-sm variant-ghost-surface"
 					href="https://github.com/skeletonlabs/skeleton"

@@ -49,8 +49,6 @@
 		// for (let i = currentView.length; i < n_samples; i++) {
 		// 	currentView.push(0);
 		// }
-		// TODO(Daquisu): Add a button to reset the game.
-		// TODO(Daquisu): Customize the alert.
 	}
 	function resetGame() {
 		currentView = [0];
@@ -77,15 +75,17 @@
 	</section>
 
 	<hr /> -->
+	<div class="flex flex-col items-center justify-center">
+	<p> Choose the maximum number of applicants to interview.</p>
 	<input
-		class="chip variant-ringed-secondary"
+		class="chip variant-ringed-secondary text-base"
 		id="n_samples"
 		type="number"
 		name="n_samples"
 		bind:value={n_samples}
 	/>
-	<button class="btn variant-filled-primary" on:click={resetGame}>Reset</button>
-	<div>Click on the image to see the performance.</div>
+	</div>
+	<hr/>
 	<div class="grid justify-center">
 		{#if visible}
 			<aside
@@ -113,7 +113,7 @@
 				</div>
 				<!-- Actions -->
 				<div class="alert-actions">
-					<button class="btn variant-filled-primary" on:click={resetGame}>Reset</button>
+					<button class="btn variant-filled-primary" on:click={resetGame}>Play again</button>
 				</div>
 			</aside>
 		{/if}
@@ -140,4 +140,5 @@
 			{/if}
 		{/each}
 	</div>
+	<div>Click on the image to see the performance.</div>
 </div>
