@@ -8,4 +8,4 @@
 
 # Tech stack
 
-It was built using the classical HTML, CSS, JS, but also [Svelte](https://svelte.dev/) and [Skeleton](https://www.skeleton.dev/)
+It was built using the classical HTML, CSS, JS, but also [Tailwind](https://tailwindcss.com/), [Svelte](https://svelte.dev/) and [Skeleton](https://www.skeleton.dev/)
