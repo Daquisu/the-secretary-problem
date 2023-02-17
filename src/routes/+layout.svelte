@@ -11,7 +11,7 @@
 		<!-- App Bar -->
 		<AppBar>
 			<svelte:fragment slot="lead">
-				<strong class="text-xl uppercase">The Secretary Problem</strong>
+				<strong class="text-xl uppercase ml-48">The Secretary Problem</strong>
 			</svelte:fragment>
 			<svelte:fragment slot="trail">
 				<!-- <a
@@ -31,7 +31,7 @@
 					Twitter
 				</a> -->
 				<a
-					class="btn btn-sm variant-ghost-surface"
+					class="btn btn-sm variant-ghost-surface mr-48"
 					href="https://github.com/skeletonlabs/skeleton"
 					target="_blank"
 					rel="noreferrer"
