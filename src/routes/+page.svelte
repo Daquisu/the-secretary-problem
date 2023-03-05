@@ -2,7 +2,7 @@
 	import CustomAvatar from '../components/CustomAvatar.svelte';
 	import ResultAndDecision from '../components/ResultAndDecision.svelte';
 	import ComponentEvent from '../components/ComponentEvent.svelte';
-	import { VisXYContainer, VisLine, VisAxis } from '@unovis/svelte';
+	import { VisScatter, VisXYContainer, VisLine, VisAxis } from '@unovis/svelte';
 
 	let currentView = [0];
 	let decision = '';
@@ -12,10 +12,42 @@
 	let win = false;
 	let n_wins = 0;
 	let n_games = 0;
-	let data = [
-	];
+	let data = [];
 	let x = [];
 	let y = [];
+	let n_ticks = 0;
+	let probs = {
+		1: 100,
+		2: 50,
+		3: 50,
+		4: 0.4583 * 100,
+		5: 0.4333 * 100,
+		6: 0.4278 * 100,
+		7: 0.4143 * 100,
+		8: 0.4098 * 100,
+		9: 0.406 * 100,
+		10: 0.3987 * 100,
+		11: 0.3984 * 100,
+		12: 0.3955 * 100,
+		13: 0.3923 * 100,
+		14: 0.3917 * 100,
+		15: 0.3894 * 100,
+		16: 0.3881 * 100,
+		17: 0.3873 * 100,
+		18: 0.3854 * 100,
+		19: 0.385 * 100,
+		20: 0.3842 * 100,
+		30: 0.3786 * 100,
+		40: 0.3757 * 100,
+		50: 0.3743 * 100,
+		60: 0.3732 * 100,
+		70: 0.3724 * 100,
+		80: 0.3719 * 100,
+		90: 0.3714 * 100,
+		100: 0.371 * 100,
+		1000: 36.81
+	};
+	let prob = 0.4583 * 100;
 
 	for (let i = 0; i < n_samples; i++) {
 		skills.push(Math.floor(Math.random() * 100));
@@ -56,10 +88,10 @@
 		win = currentView.length == indexOfMax(skills) + 1;
 		n_games++;
 		n_wins = win ? n_wins + 1 : n_wins;
-		data.push({ x: n_games, y: n_wins / n_games });
-		console.log(data);
+		data.push({ x: n_games, y: (100 * n_wins) / n_games });
 		x.push(n_games);
-		y.push(n_wins / n_games);
+		y.push((100 * n_wins) / n_games);
+		n_ticks = x.length + 1;
 		data = data;
 		// TODO(Daquisu): Show other candidates after finishing the game?
 		// for (let i = currentView.length; i < n_samples; i++) {
@@ -75,12 +107,43 @@
 		visible = false;
 	}
 	function resetStats() {
+		data = [];
+		x = [];
+		y = [];
 		n_games = 0;
 		n_wins = 0;
 	}
 	function onChangeInput() {
 		resetGame();
 		resetStats();
+		if (n_samples in probs) {
+			prob = probs[n_samples];
+			prob = prob;
+			data = data;
+		} else if (n_samples < 1001) {
+			let x0 = 1;
+			let x1 = 1000;
+			let diff;
+			for (let key in probs) {
+				diff = Number(n_samples) - key;
+				console.log(n_samples, key, diff);
+				console.log(key)
+				if (diff > 0 && key > x0) {
+					x0 = key;
+				} else if (diff < 0 && key < x1) {
+					x1 = key;
+				}
+			}
+			console.log(x0, x1);
+			prob = probs[x0] + ((probs[x1] - probs[x0]) * (n_samples - x0)) / (x1 - x0);
+			data = data;
+			console.log('prob2', prob);
+		} else {
+			prob = (100 * 1) / Math.E;
+			prob = prob;
+			data = data;
+			console.log('prob3', prob);
+		}
 	}
 </script>
 
@@ -101,11 +164,21 @@
 				total.
 			</p>
 			<button class="btn variant-filled-secondary" on:click={resetStats}>Reset stats</button>
-			<VisXYContainer data={data}>
+			<VisXYContainer {data}>
+				<VisScatter x={(d) => d.x} y={(d) => d.y} />
 				<VisLine x={(d) => d.x} y={(d) => d.y} />
-				<VisAxis type="x" />
-				<VisAxis type="y" y={[-0.01, 1.01]} />
+				<VisLine x={(d) => d.x} y={prob} color="#E2203A" />
+				<VisAxis gridLine={false} label="Number of simulations" numTicks={n_ticks} type="x" />
+				<VisAxis
+					gridLine={false}
+					label="Percentage of best choice"
+					numTicks={10}
+					type="y"
+					y={[0, 100]}
+				/>
 			</VisXYContainer>
+		{:else}
+			<p>Play a game to see your win rate.</p>
 		{/if}
 	</div>
 	<hr />
