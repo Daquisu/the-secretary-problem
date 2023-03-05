@@ -2,7 +2,7 @@
 	import CustomAvatar from '../components/CustomAvatar.svelte';
 	import ResultAndDecision from '../components/ResultAndDecision.svelte';
 	import ComponentEvent from '../components/ComponentEvent.svelte';
-	import { InputChip } from '@skeletonlabs/skeleton';
+	import { VisXYContainer, VisLine, VisAxis } from '@unovis/svelte';
 
 	let currentView = [0];
 	let decision = '';
@@ -12,6 +12,10 @@
 	let win = false;
 	let n_wins = 0;
 	let n_games = 0;
+	let data = [
+	];
+	let x = [];
+	let y = [];
 
 	for (let i = 0; i < n_samples; i++) {
 		skills.push(Math.floor(Math.random() * 100));
@@ -49,9 +53,14 @@
 	}
 	function finishGame() {
 		visible = true;
-		win = currentView.length == (indexOfMax(skills) + 1);
+		win = currentView.length == indexOfMax(skills) + 1;
 		n_games++;
 		n_wins = win ? n_wins + 1 : n_wins;
+		data.push({ x: n_games, y: n_wins / n_games });
+		console.log(data);
+		x.push(n_games);
+		y.push(n_wins / n_games);
+		data = data;
 		// TODO(Daquisu): Show other candidates after finishing the game?
 		// for (let i = currentView.length; i < n_samples; i++) {
 		// 	currentView.push(0);
@@ -77,7 +86,7 @@
 
 <div class="container mx-auto p-8 space-y-8">
 	<div class="flex flex-col items-center justify-center">
-		<p> Choose the maximum number of applicants to interview.</p>
+		<p>Choose the maximum number of applicants to interview.</p>
 		<input
 			class="chip variant-ringed-secondary text-base"
 			id="n_samples"
@@ -87,11 +96,19 @@
 			on:change={onChangeInput}
 		/>
 		{#if n_games > 0}
-			<p> You won {n_wins} of {n_games} games, or {Math.round(10000*n_wins/n_games)/100}% of total.</p>
+			<p>
+				You won {n_wins} of {n_games} games, or {Math.round((10000 * n_wins) / n_games) / 100}% of
+				total.
+			</p>
 			<button class="btn variant-filled-secondary" on:click={resetStats}>Reset stats</button>
+			<VisXYContainer data={data}>
+				<VisLine x={(d) => d.x} y={(d) => d.y} />
+				<VisAxis type="x" />
+				<VisAxis type="y" y={[-0.01, 1.01]} />
+			</VisXYContainer>
 		{/if}
 	</div>
-	<hr/>
+	<hr />
 	<div class="grid justify-center">
 		{#if visible}
 			<aside
@@ -133,7 +150,7 @@
 						<CustomAvatar id={Math.ceil(Math.random() * 70) + 1} />
 					{:else}
 						{#each components as component}
-							<ComponentEvent {component} skill={skills[i]} is_last={i == (n_samples - 1)} />
+							<ComponentEvent {component} skill={skills[i]} is_last={i == n_samples - 1} />
 						{/each}
 					{/if}
 				</div>
