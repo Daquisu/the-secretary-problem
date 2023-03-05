@@ -9,6 +9,10 @@
 	let n_samples = 4;
 	let skills = [];
 	let visible;
+	let win = false;
+	let n_wins = 0;
+	let n_games = 0;
+
 	for (let i = 0; i < n_samples; i++) {
 		skills.push(Math.floor(Math.random() * 100));
 	}
@@ -45,6 +49,9 @@
 	}
 	function finishGame() {
 		visible = true;
+		win = currentView.length == (indexOfMax(skills) + 1);
+		n_games++;
+		n_wins = win ? n_wins + 1 : n_wins;
 		// TODO(Daquisu): Show other candidates after finishing the game?
 		// for (let i = currentView.length; i < n_samples; i++) {
 		// 	currentView.push(0);
@@ -58,32 +65,31 @@
 		}
 		visible = false;
 	}
+	function resetStats() {
+		n_games = 0;
+		n_wins = 0;
+	}
+	function onChangeInput() {
+		resetGame();
+		resetStats();
+	}
 </script>
 
 <div class="container mx-auto p-8 space-y-8">
-	<!-- <h1>Hello Skeleton</h1>
-	<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-	<hr />
-	<section class="card p-4">
-		<p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-	</section>
-	<hr />
-	<section class="flex space-x-2">
-		<a class="btn variant-filled-primary" href="https://kit.svelte.dev/" target="_blank" rel="noreferrer">SvelteKit</a>
-		<a class="btn variant-filled-secondary" href="https://tailwindcss.com/" target="_blank" rel="noreferrer">Tailwind</a>
-		<a class="btn variant-filled-tertiary" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
-	</section>
-
-	<hr /> -->
 	<div class="flex flex-col items-center justify-center">
-	<p> Choose the maximum number of applicants to interview.</p>
-	<input
-		class="chip variant-ringed-secondary text-base"
-		id="n_samples"
-		type="number"
-		name="n_samples"
-		bind:value={n_samples}
-	/>
+		<p> Choose the maximum number of applicants to interview.</p>
+		<input
+			class="chip variant-ringed-secondary text-base"
+			id="n_samples"
+			type="number"
+			name="n_samples"
+			bind:value={n_samples}
+			on:change={onChangeInput}
+		/>
+		{#if n_games > 0}
+			<p> You won {n_wins} of {n_games} games, or {Math.round(10000*n_wins/n_games)/100}% of total.</p>
+			<button class="btn variant-filled-secondary" on:click={resetStats}>Reset stats</button>
+		{/if}
 	</div>
 	<hr/>
 	<div class="grid justify-center">
@@ -91,9 +97,6 @@
 			<aside
 				class="alert z-50 opacity-100 variant-filled-warning absolute  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
 			>
-				<!-- Icon -->
-				<!-- <div>(icon)</div> -->
-				<!-- Message -->
 				<div class="alert-message">
 					<h3>End of game!</h3>
 					<p>
@@ -126,9 +129,6 @@
 					on:click={() => changeCurrentViewToOne(i)}
 					on:keypress={() => changeCurrentViewToOne(i)}
 				>
-					<!-- Got it from:
-						https://svelte.dev/repl/5b495a6d61e64d0cabdb3657f100837c?version=3.18.2  
-					No idea why it doesn't work using component[0], though.-->
 					{#if cv == 0}
 						<CustomAvatar id={Math.ceil(Math.random() * 70) + 1} />
 					{:else}
